@@ -152,6 +152,8 @@ func (h *handler) ServeHTTP(rw http.ResponseWriter, httpRequest *http.Request) {
 				response = c(ctx, r)
 			} else if controller.any != nil {
 				response = controller.any(ctx, r)
+			} else if controller.websocket != nil {
+				response = controller.websocket(ctx, r, rw)
 			} else {
 				err := errors.Errorf("action for method %q not found and no any fallback", req.Request().Method)
 				h.logger.WithContext(ctx).Warn(err)

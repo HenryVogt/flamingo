@@ -36,6 +36,7 @@ type (
 		method map[string]Action
 		any    Action
 		data   DataAction
+		websocket WebsocketAction
 	}
 
 	matchedHandler struct {
@@ -85,6 +86,10 @@ func (ha *handlerAction) setData(data DataAction) {
 	ha.data = data
 }
 
+func (ha *handlerAction) setWebsocket(websocket WebsocketAction) {
+	ha.websocket = websocket
+}
+
 func (mh matchedHandlers) getHandleAny() *matchedHandler {
 	for _, matched := range mh {
 		if matched.handlerAction.any != nil {
@@ -116,6 +121,13 @@ func (registry *RouterRegistry) HandleAny(name string, action Action) {
 func (registry *RouterRegistry) HandleData(name string, action DataAction) {
 	ha := registry.handler[name]
 	ha.setData(action)
+	registry.handler[name] = ha
+}
+
+// HandleWebsocket sets the controllers websocket action
+func (registry *RouterRegistry) HandleWebsocket(name string, action WebsocketAction) {
+	ha := registry.handler[name]
+	ha.setWebsocket(action)
 	registry.handler[name] = ha
 }
 

@@ -12,6 +12,8 @@ type (
 	// DataAction is a method called which does not return the web response itself, but data instead
 	DataAction func(ctx context.Context, req *Request, callParams RequestParams) interface{}
 
+	WebsocketAction func(ctx context.Context, req *Request, rw http.ResponseWriter) Result
+
 	wrappedHTTPHandler struct {
 		handler http.Handler
 		request *Request
